@@ -99,7 +99,8 @@ function menuUsuario() {
             "1. Depositar\n" +
             "2. Ver saldo\n" +
             "3. Retirar\n" +
-            "4. Salir"
+            "4. Consignar\n" +
+            "5. Salir"
         ));
 
         switch (opcion) {
@@ -117,6 +118,10 @@ function menuUsuario() {
                 break;
 
             case 4:
+                depositar();
+                break;
+
+            case 5:
                 salir = true;
                 break;
 
