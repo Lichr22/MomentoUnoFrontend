@@ -96,10 +96,10 @@ function menuUsuario() {
     while (!salir) {
 
         let opcion = parseInt(prompt(
-            "1. Depositar\n" +
+            "1. Consignar\n" +
             "2. Ver saldo\n" +
             "3. Retirar\n" +
-            "4. Consignar\n" +
+            "4. Consultar movimientos\n" +
             "5. Salir"
         ));
 
@@ -118,7 +118,7 @@ function menuUsuario() {
                 break;
 
             case 4:
-                depositar();
+                consultarMovimientos();
                 break;
 
             case 5:

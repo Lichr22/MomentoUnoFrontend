@@ -16,6 +16,7 @@ function depositar() {
     saldoActual += monto;
 
     localStorage.setItem("saldo", saldoActual);
+    guardarMovimientos(monto, "Consignación");
 
     alert("Consignación exitosa");
     alert("Nuevo saldo: " + saldoActual);

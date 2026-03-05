@@ -28,6 +28,7 @@ function retirar() {
 
             saldo = saldo - monto;                  // Restamos
             localStorage.setItem("saldo", saldo);  // Guardamos
+            guardarMovimientos(monto, "Retiro"); // Guardamos el movimiento
             alert("Retiro exitoso. Saldo actual: $" + saldo);
 
         } else {
