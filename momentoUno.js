@@ -157,5 +157,3 @@ function menuUsuario() {
         }
     }
 }
-
-menuInicial();
