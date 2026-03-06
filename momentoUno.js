@@ -1,5 +1,6 @@
 let intento = 0;
 let bloqueo = false;
+let nombreUsuario = null;
 
 function menuInicial() {
     let salir = false;
@@ -27,6 +28,9 @@ function menuInicial() {
 
             case 3:
                 alert("Saliendo del sistema");
+                intento = 0;
+                bloqueo = false;
+                nombreUsuario = null;
                 salir = true;
                 break;
 
@@ -38,18 +42,32 @@ function menuInicial() {
 
 function registrarUsuario() {
 
-    let usuario = prompt("Nombre de usuario");
+    let nombreUsuario = prompt("Nombre de usuario");
+    // Permitir varios usuarios y validando que el nombre de usuario no esté repetido
+    let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    for (let i = 0; i < usuarios.length; i++) {
+        if (usuarios[i].nombre === nombreUsuario) {
+            alert("Nombre de usuario ya existe");
+            return;
+        }
+    }
+
     let contrasena = prompt("Contraseña");
     let saldo = parseFloat(prompt("Saldo inicial"));
 
-    if (!usuario || !contrasena || isNaN(saldo) || saldo < 0) {
+    if (!nombreUsuario || !contrasena || isNaN(saldo) || saldo < 0) {
         alert("Datos inválidos");
         return;
     }
 
-    localStorage.setItem("usuario", usuario);
-    localStorage.setItem("contrasena", contrasena);
-    localStorage.setItem("saldo", saldo);
+    let nuevoUsuario = {
+        nombre: nombreUsuario,
+        contrasena: contrasena,
+        saldo: saldo
+    };
+    usuarios.push(nuevoUsuario);
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
     alert("Usuario registrado correctamente");
 }
@@ -62,6 +80,14 @@ function login() {
     }
 
     let usuarioLogin = prompt("Usuario");
+
+    let usuarioEncontrado = buscarUsuario(usuarioLogin);
+
+    if (usuarioEncontrado === null) {
+        alert("Usuario no encontrado");
+        return false;
+    }
+
     let contrasenaLogin = prompt("Contraseña");
 
     if (!usuarioLogin || !contrasenaLogin) {
@@ -69,12 +95,10 @@ function login() {
         return false;
     }
 
-    let usuarioGuardado = localStorage.getItem("usuario");
-    let contrasenaGuardada = localStorage.getItem("contrasena");
-
-    if (usuarioLogin === usuarioGuardado && contrasenaLogin === contrasenaGuardada) {
+    if (contrasenaLogin === usuarioEncontrado.contrasena) {
         alert("Login correcto");
         intento = 0;
+        nombreUsuario = usuarioEncontrado.nombre;
         return true;
     }
 
@@ -106,7 +130,7 @@ function menuUsuario() {
         switch (opcion) {
 
             case 1:
-                depositar();
+                depositar(nombreUsuario);
                 break;
 
             case 2:
@@ -114,26 +138,24 @@ function menuUsuario() {
                 break;
 
             case 3:
-                retirar();
+                retirar(nombreUsuario);
                 break;
 
             case 4:
-                consultarMovimientos();
+                consultarMovimientos(nombreUsuario);
                 break;
 
             case 5:
                 salir = true;
+                intento = 0;
+                bloqueo = false;
+                nombreUsuario = null;
                 break;
 
             default:
                 alert("Opción inválida");
         }
     }
-}
-
-function verSaldo() {
-    let saldo = parseFloat(localStorage.getItem("saldo"));
-    alert("Saldo actual: " + saldo);
 }
 
 menuInicial();

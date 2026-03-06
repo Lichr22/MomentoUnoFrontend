@@ -1,16 +1,28 @@
-function guardarMovimientos (monto, transaccion) {
+function guardarMovimientos(nombreUsuario, monto, transaccion) {
+    const movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
+  
     let fecha = new Date().toLocaleString();
-    const movimientos = JSON.parse(localStorage.getItem("movimiento"));
-    movimientos.push("Fecha: " + fecha + " - " + transaccion + " - Monto: $" + monto );
-    localStorage.setItem("movimiento", JSON.stringify(movimientos));
+    
+    let nuevoMovimiento = {
+        nombreUsuario: nombreUsuario,
+        monto: monto,
+        transaccion: transaccion,
+        fecha: fecha
+    }
+
+    movimientos.push(nuevoMovimiento);
+    
+    localStorage.setItem("movimientos", JSON.stringify(movimientos));
 }
 
-function consultarMovimientos() {
-    const movimientos = JSON.parse(localStorage.getItem("movimiento"));
+function consultarMovimientos(nombreUsuario) {
+    const movimientos = JSON.parse(localStorage.getItem("movimientos")) || [];
 
-    if (movimientos.length === 0) {
-        alert("No hay movimientos registrados.");
+    const movimientosUsuario = movimientos.filter(m => m.nombreUsuario === nombreUsuario);
+
+    if (movimientosUsuario.length === 0) {
+        alert("No hay movimientos registrados para este usuario .");
     } else {
-        alert ("Historial de movimientos:\n" + movimientos.join("\n"));
+        alert("Historial de movimientos:\n" + movimientosUsuario.map(m => `Fecha: ${m.fecha} - ${m.transaccion} - Monto: $${m.monto}`).join("\n"));
     }
 }

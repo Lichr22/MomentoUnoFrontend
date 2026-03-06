@@ -1,4 +1,4 @@
-function retirar() {
+function retirar(nombreUsuario) {
 
     // Pedimos el monto
 
@@ -7,7 +7,7 @@ function retirar() {
 
     // Traemos el saldo guardado
 
-    let saldo = parseFloat(localStorage.getItem("saldo"));
+    let saldo = buscarUsuario(nombreUsuario).saldo || 0;
 
 
     // Si no hay saldo guardado, empezamos en 0
@@ -26,9 +26,19 @@ function retirar() {
 
         if (monto <= saldo) {
 
-            saldo = saldo - monto;                  // Restamos
-            localStorage.setItem("saldo", saldo);  // Guardamos
-            guardarMovimientos(monto, "Retiro"); // Guardamos el movimiento
+            saldo -= monto;                  // Restamos
+
+            let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+            for (let i = 0; i < usuarios.length; i++) {
+                if (usuarios[i].nombre === nombreUsuario) {
+                    usuarios[i].saldo = saldo; // Actualizamos el saldo del usuario
+                    guardarMovimientos(nombreUsuario, monto, "Retiro"); // Guardamos el movimiento
+                    break;
+                }
+            }
+
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
             alert("Retiro exitoso. Saldo actual: $" + saldo);
 
         } else {
