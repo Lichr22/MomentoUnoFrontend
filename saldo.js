@@ -8,7 +8,7 @@ function buscarUsuario(nombreUsuario) {
     return null;
 }
 
-function verSaldo() {
+function verSaldo(nombreUsuario) {
     let saldo = buscarUsuario(nombreUsuario).saldo || 0;
     alert("Saldo actual: " + saldo);
 }

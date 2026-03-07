@@ -134,7 +134,7 @@ function menuUsuario() {
                 break;
 
             case 2:
-                verSaldo();
+                verSaldo(nombreUsuario);
                 break;
 
             case 3:
